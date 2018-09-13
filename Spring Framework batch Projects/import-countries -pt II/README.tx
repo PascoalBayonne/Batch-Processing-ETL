@@ -1,0 +1,4 @@
+Spring batch with multiple steps. 1st reads from db and save the data in context, second reads from file, fetch the data saved from 1st step, gather the data in processor and process all data while validating itemsIn and then persist the final data into db.
+Passing Data to Future Steps: ExecutionContextPromotionListener @BeforeStep and @AfterSteo.
+
+
