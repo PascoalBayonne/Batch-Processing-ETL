@@ -1,0 +1,8 @@
+com\pascoal\app\service\FieldSetSqlParameterSourceProvider.class
+com\pascoal\app\service\LogItemWriter.class
+com\pascoal\app\processor\CustomProcessor$ValidationFields.class
+com\pascoal\app\AppRunner.class
+com\pascoal\app\processor\MoveFileToProcess.class
+com\pascoal\app\processor\CustomProcessor.class
+com\pascoal\app\service\RetrieveItemWriter.class
+com\pascoal\app\service\StringRowMapper.class
