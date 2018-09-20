@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
 
 @Component
 public class JobProcessListener implements JobExecutionListener {
@@ -77,8 +79,9 @@ public class JobProcessListener implements JobExecutionListener {
     private void moveFileToErrorFolder(Path fileInProcess, Path errorFolder) {
         logger.info("Unexpected error occurred while the job execution! Now moving file to error folder");
         try {
-            //if in processing folder doesn't exists we find it in another folder
-            Files.move(fileInProcess.toAbsolutePath(), errorFolder.resolve(fileInProcess.getFileName() + "_ERROR"));
+
+            Files.move(fileInProcess.toAbsolutePath(), errorFolder.resolve(fileInProcess.getFileName() + "_ERROR"),
+                    StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             logger.info("Error while trying to move the processed file: ");
             logger.error(e.getMessage());
