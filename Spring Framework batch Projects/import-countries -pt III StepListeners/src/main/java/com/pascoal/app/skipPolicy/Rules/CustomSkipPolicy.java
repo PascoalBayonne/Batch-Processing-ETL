@@ -32,7 +32,7 @@ public class CustomSkipPolicy implements SkipPolicy, InitializingBean {
 
         if (exception instanceof FileNotFoundException) {
             return false;
-        } else if ((exception instanceof IncorrectTokenCountException || exception instanceof FlatFileParseException) && (skipCount >= skipErrorLimit)) {
+        } else if ((exception instanceof IncorrectTokenCountException || exception instanceof FlatFileParseException) && (skipCount <= skipErrorLimit)) {
 
             FlatFileParseException fileParseException = (FlatFileParseException) exception;
             StringBuilder errorMessage = new StringBuilder();
