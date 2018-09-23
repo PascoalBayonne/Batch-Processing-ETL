@@ -9,6 +9,7 @@
 
     <beans:import resource="batch-core.xml"/>
 
+    <!--STEP READERS-->
     <beans:bean id="dbReader" class="org.springframework.batch.item.database.JdbcCursorItemReader">
         <beans:property name="dataSource" ref="dataSource"/>
         <beans:property name="name" value="dbReader"/>
@@ -23,7 +24,7 @@
         </beans:property>
         <beans:property name="rowMapper" ref="rowMapper"/>
     </beans:bean>
-
+    <!--rawMapper is required by a jdbcItemReader in order to map rows in a resultSet-->
     <beans:bean id="rowMapper" class="com.pascoal.app.service.StringRowMapper"/>
 
 
@@ -69,16 +70,8 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="promotionListener"
-                class="org.springframework.batch.core.listener.ExecutionContextPromotionListener">
-        <beans:property name="keys" value="nationalityMap"/>
-    </beans:bean>
 
-    <beans:bean id="moveToProcessedFolder" class="com.pascoal.app.customListeners.CustomChunkListener">
-        <beans:property name="processedDirectory"  value="${batch.resources.processed}"/>
-        <beans:property name="fileProcessingLocation"  value="${batch.resources.processing}"/>
-    </beans:bean>
-
+    <!--LISTENERS-->
     <beans:bean id="jobListenerManager" class="com.pascoal.app.customListeners.JobProcessListener">
         <beans:property name="processedFolderLocation"  value="${batch.resources.processed}"/>
         <beans:property name="fileInProcess"  value="${batch.resources.processing}"/>
@@ -86,23 +79,34 @@
         <beans:property name="fileToProcessesLocation"  value="${batch.resources.waiting}"/>
     </beans:bean>
 
+    <beans:bean id="moveToProcessedFolder" class="com.pascoal.app.customListeners.CustomChunkListener">
+        <beans:property name="processedDirectory"  value="${batch.resources.processed}"/>
+        <beans:property name="fileProcessingLocation"  value="${batch.resources.processing}"/>
+    </beans:bean>
+
+    <beans:bean id="promotionListener"
+                class="org.springframework.batch.core.listener.ExecutionContextPromotionListener">
+        <beans:property name="keys" value="nationalityMap"/>
+    </beans:bean>
+
+    <!--SKIP POLICY-->
     <beans:bean id="skipLinesPolicy" class="com.pascoal.app.skipPolicy.Rules.CustomSkipPolicy">
         <beans:property name="linesSkippedFile"  value="${batch.skipPolicy.skippedLines}"/>
         <beans:property name="skipErrorLimit"  value="${batch.skipPolicy.skipErrorLimit}"/>
     </beans:bean>
 
+    <!--TASKLETS-->
     <beans:bean id="moveToProcessing" class="com.pascoal.app.processor.MoveFileToProcess"/>
-
+    <!--WRITERS-->
     <beans:bean id="logItemWriter" class="com.pascoal.app.service.LogItemWriter"/>
-
+    <!--PROCESSORS-->
     <beans:bean id="customProcessor" class="com.pascoal.app.processor.CustomProcessor"/>
 
+    <!--JOB CONFIG-->
     <job id="import-customer">
-
         <step id="prepareFile" next="fileIn-to-console">
             <tasklet ref="moveToProcessing"/>
         </step>
-
         <step id="fileIn-to-console" next="fileIn-to-dataBase">
             <tasklet>
                 <chunk reader="dbReader"
@@ -120,7 +124,7 @@
                         processor="customProcessor"
                         writer="itemWriter"
                         skip-policy="skipLinesPolicy"
-                        commit-interval="1000" />
+                        commit-interval="2000" />
             </tasklet>
             <listeners>
                 <listener ref="skipLinesPolicy"/>

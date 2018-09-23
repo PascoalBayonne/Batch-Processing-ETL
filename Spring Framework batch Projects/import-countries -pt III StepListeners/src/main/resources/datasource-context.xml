@@ -22,7 +22,7 @@
     />
 
     <!--create job-meta tables automatically-->
-    <jdbc:initialize-database data-source="dataSource">
+    <jdbc:initialize-database>
         <jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql"/>
         <jdbc:script location="org/springframework/batch/core/schema-mysql.sql"/>
     </jdbc:initialize-database>

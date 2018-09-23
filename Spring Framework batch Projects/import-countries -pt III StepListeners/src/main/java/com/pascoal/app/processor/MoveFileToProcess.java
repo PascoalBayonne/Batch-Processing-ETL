@@ -34,7 +34,7 @@ public class MoveFileToProcess implements Tasklet, InitializingBean {
 
             LOGGER.info("Moving file: " + fileWaitingLocation.getFileName() + " from waiting to :" + fileProcessingLocation.toAbsolutePath());
         } catch (IOException e) {
-            LOGGER.info("A problem occured while moving the file: " + fileWaitingLocation.getFileName() + " from waiting to :" + fileProcessingLocation.toAbsolutePath());
+            LOGGER.info("A problem occurred while moving the file: " + fileWaitingLocation.getFileName() + " from waiting to :" + fileProcessingLocation.toAbsolutePath());
 
         }
 
