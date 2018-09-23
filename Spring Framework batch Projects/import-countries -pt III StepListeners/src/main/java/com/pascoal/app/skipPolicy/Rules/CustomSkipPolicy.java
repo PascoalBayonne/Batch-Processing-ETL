@@ -32,14 +32,14 @@ public class CustomSkipPolicy implements SkipPolicy, InitializingBean {
 
         if (exception instanceof FileNotFoundException) {
             return false;
-        } else if ((exception instanceof IncorrectTokenCountException || exception instanceof FlatFileParseException) && (skipCount <= skipErrorLimit)) {
+        } else if ((exception instanceof FlatFileParseException) && (skipCount <= skipErrorLimit)) {
 
             FlatFileParseException fileParseException = (FlatFileParseException) exception;
             StringBuilder errorMessage = new StringBuilder();
 
-            errorMessage.append("ERROR: An error occurred while processing the ")
+            errorMessage.append("ERROR: An error occurred while processing the line n: ")
                     .append(fileParseException.getLineNumber())
-                    .append(" the line of the file. See the error detail below").append(" input is: .\n");
+                    .append(" See the error detail below").append(" input is: .\n");
 
             errorMessage.append(fileParseException.getInput()).append("\n");
             logger.error("{}", errorMessage.toString());

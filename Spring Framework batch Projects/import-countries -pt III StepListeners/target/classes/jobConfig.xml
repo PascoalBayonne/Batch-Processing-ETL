@@ -24,7 +24,7 @@
         </beans:property>
         <beans:property name="rowMapper" ref="rowMapper"/>
     </beans:bean>
-
+    <!--rawMapper is required by a jdbcItemReader in order to map rows in a resultSet-->
     <beans:bean id="rowMapper" class="com.pascoal.app.service.StringRowMapper"/>
 
 
