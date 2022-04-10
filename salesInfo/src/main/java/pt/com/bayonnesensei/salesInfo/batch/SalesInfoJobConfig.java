@@ -14,6 +14,8 @@ import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
@@ -45,6 +47,7 @@ public class SalesInfoJobConfig {
                 .reader(salesInfoFileReader())
                 .processor(salesInfoItemProcessor)
                 .writer(salesInfoItemWriter())
+                .taskExecutor(taskExecutor())
                 .build();
     }
 
@@ -68,4 +71,13 @@ public class SalesInfoJobConfig {
                 .build();
     }
 
+    @Bean
+    public TaskExecutor taskExecutor() {
+        var executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(5);
+        executor.setQueueCapacity(10);
+        executor.setThreadNamePrefix("Thread N-> :");
+        return executor;
+    }
 }
