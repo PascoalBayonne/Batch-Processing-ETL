@@ -7,6 +7,8 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.integration.async.AsyncItemProcessor;
+import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -21,6 +23,8 @@ import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @RequiredArgsConstructor
@@ -43,10 +47,10 @@ public class SalesInfoJobConfig {
     @Bean
     public Step fromFileIntoDataBase(){
         return stepBuilderFactory.get("fromFileIntoDatabase")
-                .<SalesInfoDTO,SalesInfo>chunk(10)
+                .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
                 .reader(salesInfoFileReader())
-                .processor(salesInfoItemProcessor)
-                .writer(salesInfoItemWriter())
+                .processor(asyncItemProcessor())
+                .writer(asyncItemWriter())
                 .taskExecutor(taskExecutor())
                 .build();
     }
@@ -74,10 +78,26 @@ public class SalesInfoJobConfig {
     @Bean
     public TaskExecutor taskExecutor() {
         var executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(5);
-        executor.setQueueCapacity(10);
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(15);
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setThreadNamePrefix("Thread N-> :");
         return executor;
+    }
+
+    @Bean
+    public AsyncItemProcessor<SalesInfoDTO,SalesInfo> asyncItemProcessor(){
+        var asyncItemProcessor = new AsyncItemProcessor<SalesInfoDTO,SalesInfo>();
+        asyncItemProcessor.setDelegate(salesInfoItemProcessor);
+        asyncItemProcessor.setTaskExecutor(taskExecutor());
+        return asyncItemProcessor;
+    }
+
+    @Bean
+    public AsyncItemWriter<SalesInfo> asyncItemWriter(){
+        var asyncWriter = new AsyncItemWriter<SalesInfo>();
+        asyncWriter.setDelegate(salesInfoItemWriter());
+        return asyncWriter;
     }
 }
