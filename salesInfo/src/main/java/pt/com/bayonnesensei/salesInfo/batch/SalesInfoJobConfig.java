@@ -6,16 +6,20 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.integration.async.AsyncItemProcessor;
 import org.springframework.batch.integration.async.AsyncItemWriter;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
@@ -36,19 +40,19 @@ public class SalesInfoJobConfig {
 
 
     @Bean
-    public Job importSalesInfo(){
+    public Job importSalesInfo(Step fromFileIntoDataBase){
         return jobBuilderFactory.get("importSalesInfo")
                 .incrementer(new RunIdIncrementer())
-                .start(fromFileIntoDataBase())
+                .start(fromFileIntoDataBase)
                 .build();
     }
 
 
     @Bean
-    public Step fromFileIntoDataBase(){
+    public Step fromFileIntoDataBase(ItemReader<SalesInfoDTO> salesInfoDTOItemReader){
         return stepBuilderFactory.get("fromFileIntoDatabase")
                 .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
-                .reader(salesInfoFileReader())
+                .reader(salesInfoDTOItemReader)
                 .processor(asyncItemProcessor())
                 .writer(asyncItemWriter())
                 .taskExecutor(taskExecutor())
@@ -56,9 +60,10 @@ public class SalesInfoJobConfig {
     }
 
     @Bean
-    public FlatFileItemReader<SalesInfoDTO> salesInfoFileReader(){
+    @StepScope
+    public FlatFileItemReader<SalesInfoDTO> salesInfoFileReader(@Value("#{jobParameters['input.file.name']}") String resource){
         return new FlatFileItemReaderBuilder<SalesInfoDTO>()
-                .resource(new ClassPathResource("data/Pascoal-Store.csv"))
+                .resource(new FileSystemResource(resource))
                 .name("salesInfoFileReader")
                 .delimited()
                 .delimiter(",")
