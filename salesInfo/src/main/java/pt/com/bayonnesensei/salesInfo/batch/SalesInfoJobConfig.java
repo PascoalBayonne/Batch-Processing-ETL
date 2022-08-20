@@ -14,6 +14,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
+import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
@@ -37,6 +39,8 @@ public class SalesInfoJobConfig {
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
     private final SalesInfoItemProcessor salesInfoItemProcessor;
+
+    private final CustomSkipPolicy customSkipPolicy;
 
 
     @Bean
@@ -55,6 +59,8 @@ public class SalesInfoJobConfig {
                 .reader(salesInfoDTOItemReader)
                 .processor(asyncItemProcessor())
                 .writer(asyncItemWriter())
+                .faultTolerant()
+                .skipPolicy(customSkipPolicy)
                 .taskExecutor(taskExecutor())
                 .build();
     }
