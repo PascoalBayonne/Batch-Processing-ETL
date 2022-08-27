@@ -25,6 +25,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
+import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomStepExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
@@ -41,6 +42,8 @@ public class SalesInfoJobConfig {
     private final SalesInfoItemProcessor salesInfoItemProcessor;
 
     private final CustomSkipPolicy customSkipPolicy;
+
+    private final CustomStepExecutionListener customStepExecutionListener;
 
 
     @Bean
@@ -61,6 +64,7 @@ public class SalesInfoJobConfig {
                 .writer(asyncItemWriter())
                 .faultTolerant()
                 .skipPolicy(customSkipPolicy)
+                .listener(customStepExecutionListener)
                 .taskExecutor(taskExecutor())
                 .build();
     }
