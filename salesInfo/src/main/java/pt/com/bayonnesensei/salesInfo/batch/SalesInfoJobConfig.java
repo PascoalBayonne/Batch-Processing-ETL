@@ -25,6 +25,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
+import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomJobExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomStepExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
@@ -45,12 +46,15 @@ public class SalesInfoJobConfig {
 
     private final CustomStepExecutionListener customStepExecutionListener;
 
+    private final CustomJobExecutionListener customJobExecutionListener;
+
 
     @Bean
     public Job importSalesInfo(Step fromFileIntoDataBase){
         return jobBuilderFactory.get("importSalesInfo")
                 .incrementer(new RunIdIncrementer())
                 .start(fromFileIntoDataBase)
+                .listener(customJobExecutionListener)
                 .build();
     }
 
