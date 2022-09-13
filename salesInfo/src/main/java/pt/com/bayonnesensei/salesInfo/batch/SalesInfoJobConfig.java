@@ -2,6 +2,7 @@ package pt.com.bayonnesensei.salesInfo.batch;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -16,12 +17,15 @@ import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.kafka.KafkaItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
@@ -48,6 +52,8 @@ public class SalesInfoJobConfig {
 
     private final CustomJobExecutionListener customJobExecutionListener;
 
+    private final KafkaTemplate<String,SalesInfo> salesInfoKafkaTemplate;
+
 
     @Bean
     public Job importSalesInfo(Step fromFileIntoDataBase){
@@ -60,7 +66,7 @@ public class SalesInfoJobConfig {
 
 
     @Bean
-    public Step fromFileIntoDataBase(ItemReader<SalesInfoDTO> salesInfoDTOItemReader){
+    public Step fromFileIntoKafka(ItemReader<SalesInfoDTO> salesInfoDTOItemReader){
         return stepBuilderFactory.get("fromFileIntoDatabase")
                 .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
                 .reader(salesInfoDTOItemReader)
@@ -81,7 +87,7 @@ public class SalesInfoJobConfig {
                 .name("salesInfoFileReader")
                 .delimited()
                 .delimiter(",")
-                .names(new String[]{"product","seller","sellerId","price","city","category"})
+                .names("product","seller","sellerId","price","city","category")
                 .linesToSkip(1)
                 .targetType(SalesInfoDTO.class)
                 .build();
@@ -116,7 +122,18 @@ public class SalesInfoJobConfig {
     @Bean
     public AsyncItemWriter<SalesInfo> asyncItemWriter(){
         var asyncWriter = new AsyncItemWriter<SalesInfo>();
-        asyncWriter.setDelegate(salesInfoItemWriter());
+        asyncWriter.setDelegate(salesInfoKafkaItemWriter());
         return asyncWriter;
+    }
+
+    @Bean
+    @SneakyThrows
+    public KafkaItemWriter<String,SalesInfo> salesInfoKafkaItemWriter(){
+        var kafkaItemWriter = new KafkaItemWriter<String,SalesInfo>();
+        kafkaItemWriter.setKafkaTemplate(salesInfoKafkaTemplate);
+        kafkaItemWriter.setItemKeyMapper(salesInfo -> String.valueOf(salesInfo.getSellerId()));
+        kafkaItemWriter.setDelete(Boolean.FALSE);
+        kafkaItemWriter.afterPropertiesSet();
+        return kafkaItemWriter;
     }
 }

@@ -22,9 +22,9 @@ public class SalesInfoItemProcessor implements ItemProcessor<SalesInfoDTO, Sales
         Thread.sleep(200);// maybe hitting an external api
         log.info("processing the item: {}", item.toString());
         int i = count.addAndGet(1);
-        if (i == 2) {
-            throw new IllegalArgumentException();
-        }
+//        if (i == 2) {
+//            throw new IllegalArgumentException();
+//        }
         return salesInfoMapper.mapToEntity(item);
     }
 }
