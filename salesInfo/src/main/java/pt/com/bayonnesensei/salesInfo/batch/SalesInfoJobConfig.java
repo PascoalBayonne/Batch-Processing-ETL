@@ -32,6 +32,7 @@ import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomJobExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomStepExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
+import pt.com.bayonnesensei.salesInfo.batch.step.FileCollector;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
 import javax.persistence.EntityManagerFactory;
@@ -54,18 +55,21 @@ public class SalesInfoJobConfig {
 
     private final KafkaTemplate<String,SalesInfo> salesInfoKafkaTemplate;
 
+    private final FileCollector fileCollector;
+
 
     @Bean
     public Job importSalesInfo(Step fromFileIntoDataBase){
         return jobBuilderFactory.get("importSalesInfo")
                 .incrementer(new RunIdIncrementer())
                 .start(fromFileIntoDataBase)
+                .next(fileCollectorTasklet())
                 .listener(customJobExecutionListener)
                 .build();
     }
 
 
-    @Bean
+    @Bean(name = "fromFileIntoDataBase")
     public Step fromFileIntoKafka(ItemReader<SalesInfoDTO> salesInfoDTOItemReader){
         return stepBuilderFactory.get("fromFileIntoDatabase")
                 .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
@@ -135,5 +139,12 @@ public class SalesInfoJobConfig {
         kafkaItemWriter.setDelete(Boolean.FALSE);
         kafkaItemWriter.afterPropertiesSet();
         return kafkaItemWriter;
+    }
+
+    @Bean
+    public Step fileCollectorTasklet(){
+        return stepBuilderFactory.get("fileCollector")
+                .tasklet(fileCollector)
+                .build();
     }
 }
