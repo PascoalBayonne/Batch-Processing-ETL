@@ -19,15 +19,16 @@ import java.util.stream.Stream;
 public class FileCollector implements Tasklet {
     @Value("${sales.info.directory}")
     private String processedDirectory;
+
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         log.info("-------------> Executing the File Collector");
-       Path directoryPath = Paths.get(processedDirectory+File.separator+"processed");
-       try(Stream<Path> filesToDelete = Files.walk(directoryPath)){
-          filesToDelete.filter(Files::isRegularFile)
-                  .map(Path::toFile)
-                  .forEach(File::delete);
-       }
+        Path directoryPath = Paths.get(processedDirectory + File.separator + "processed");
+        try (Stream<Path> filesToDelete = Files.walk(directoryPath)) {
+            filesToDelete.filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        }
         return RepeatStatus.FINISHED;
     }
 }

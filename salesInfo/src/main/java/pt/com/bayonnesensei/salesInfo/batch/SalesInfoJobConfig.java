@@ -12,17 +12,12 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.integration.async.AsyncItemProcessor;
 import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.kafka.KafkaItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -46,20 +41,15 @@ public class SalesInfoJobConfig {
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
     private final SalesInfoItemProcessor salesInfoItemProcessor;
-
     private final CustomSkipPolicy customSkipPolicy;
-
     private final CustomStepExecutionListener customStepExecutionListener;
-
     private final CustomJobExecutionListener customJobExecutionListener;
-
-    private final KafkaTemplate<String,SalesInfo> salesInfoKafkaTemplate;
-
+    private final KafkaTemplate<String, SalesInfo> salesInfoKafkaTemplate;
     private final FileCollector fileCollector;
 
 
     @Bean
-    public Job importSalesInfo(Step fromFileIntoDataBase){
+    public Job importSalesInfo(Step fromFileIntoDataBase) {
         return jobBuilderFactory.get("importSalesInfo")
                 .incrementer(new RunIdIncrementer())
                 .start(fromFileIntoDataBase)
@@ -70,7 +60,7 @@ public class SalesInfoJobConfig {
 
 
     @Bean(name = "fromFileIntoDataBase")
-    public Step fromFileIntoKafka(ItemReader<SalesInfoDTO> salesInfoDTOItemReader){
+    public Step fromFileIntoKafka(ItemReader<SalesInfoDTO> salesInfoDTOItemReader) {
         return stepBuilderFactory.get("fromFileIntoDatabase")
                 .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
                 .reader(salesInfoDTOItemReader)
@@ -85,22 +75,15 @@ public class SalesInfoJobConfig {
 
     @Bean
     @StepScope
-    public FlatFileItemReader<SalesInfoDTO> salesInfoFileReader(@Value("#{jobParameters['input.file.name']}") String resource){
+    public FlatFileItemReader<SalesInfoDTO> salesInfoFileReader(@Value("#{jobParameters['input.file.name']}") String resource) {
         return new FlatFileItemReaderBuilder<SalesInfoDTO>()
                 .resource(new FileSystemResource(resource))
                 .name("salesInfoFileReader")
                 .delimited()
                 .delimiter(",")
-                .names("product","seller","sellerId","price","city","category")
-                .linesToSkip(1)
+                .names("product", "seller", "sellerId", "price", "city", "category")
+                .linesToSkip(1)//skipping the header of file
                 .targetType(SalesInfoDTO.class)
-                .build();
-    }
-
-    @Bean
-    public JpaItemWriter<SalesInfo> salesInfoItemWriter(){
-        return new JpaItemWriterBuilder<SalesInfo>()
-                .entityManagerFactory(entityManagerFactory)
                 .build();
     }
 
@@ -112,19 +95,19 @@ public class SalesInfoJobConfig {
         executor.setQueueCapacity(15);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setThreadNamePrefix("Thread N-> :");
-        return executor;
+        return executor;//used on multithreaded step
     }
 
     @Bean
-    public AsyncItemProcessor<SalesInfoDTO,SalesInfo> asyncItemProcessor(){
-        var asyncItemProcessor = new AsyncItemProcessor<SalesInfoDTO,SalesInfo>();
+    public AsyncItemProcessor<SalesInfoDTO, SalesInfo> asyncItemProcessor() {
+        var asyncItemProcessor = new AsyncItemProcessor<SalesInfoDTO, SalesInfo>();
         asyncItemProcessor.setDelegate(salesInfoItemProcessor);
         asyncItemProcessor.setTaskExecutor(taskExecutor());
         return asyncItemProcessor;
     }
 
     @Bean
-    public AsyncItemWriter<SalesInfo> asyncItemWriter(){
+    public AsyncItemWriter<SalesInfo> asyncItemWriter() {
         var asyncWriter = new AsyncItemWriter<SalesInfo>();
         asyncWriter.setDelegate(salesInfoKafkaItemWriter());
         return asyncWriter;
@@ -132,8 +115,8 @@ public class SalesInfoJobConfig {
 
     @Bean
     @SneakyThrows
-    public KafkaItemWriter<String,SalesInfo> salesInfoKafkaItemWriter(){
-        var kafkaItemWriter = new KafkaItemWriter<String,SalesInfo>();
+    public KafkaItemWriter<String, SalesInfo> salesInfoKafkaItemWriter() {
+        var kafkaItemWriter = new KafkaItemWriter<String, SalesInfo>();
         kafkaItemWriter.setKafkaTemplate(salesInfoKafkaTemplate);
         kafkaItemWriter.setItemKeyMapper(salesInfo -> String.valueOf(salesInfo.getSellerId()));
         kafkaItemWriter.setDelete(Boolean.FALSE);
@@ -142,7 +125,7 @@ public class SalesInfoJobConfig {
     }
 
     @Bean
-    public Step fileCollectorTasklet(){
+    public Step fileCollectorTasklet() {
         return stepBuilderFactory.get("fileCollector")
                 .tasklet(fileCollector)
                 .build();
