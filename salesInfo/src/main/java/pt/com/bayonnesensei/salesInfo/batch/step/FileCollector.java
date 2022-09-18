@@ -22,7 +22,7 @@ public class FileCollector implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        log.info("-------------> Executing the File Collector");
+        log.warn("-------------> Executing the File Collector");
         Path directoryPath = Paths.get(processedDirectory + File.separator + "processed");
         try (Stream<Path> filesToDelete = Files.walk(directoryPath)) {
             filesToDelete.filter(Files::isRegularFile)

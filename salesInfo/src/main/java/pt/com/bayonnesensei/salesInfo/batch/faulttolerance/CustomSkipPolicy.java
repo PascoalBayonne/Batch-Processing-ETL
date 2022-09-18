@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 @Slf4j
 public class CustomSkipPolicy implements SkipPolicy {
 
-    private final Integer skipLimit = 0;
+    private final Integer skipLimit = 4;
     @Override
     public boolean shouldSkip(Throwable exception, int skipCount) throws SkipLimitExceededException {
         if (exception instanceof FileNotFoundException){

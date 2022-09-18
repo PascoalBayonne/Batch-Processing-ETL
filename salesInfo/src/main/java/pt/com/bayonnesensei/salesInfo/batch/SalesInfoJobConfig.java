@@ -3,6 +3,8 @@ package pt.com.bayonnesensei.salesInfo.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -24,10 +26,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
+import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomJobDecider;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomJobExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomStepExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
 import pt.com.bayonnesensei.salesInfo.batch.step.FileCollector;
+import pt.com.bayonnesensei.salesInfo.batch.step.SendEmail;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
 import javax.persistence.EntityManagerFactory;
@@ -47,19 +51,23 @@ public class SalesInfoJobConfig {
     private final KafkaTemplate<String, SalesInfo> salesInfoKafkaTemplate;
     private final FileCollector fileCollector;
 
+    private final SendEmail sendEmail;
+
 
     @Bean
-    public Job importSalesInfo(Step fromFileIntoDataBase) {
+    public Job importSalesInfo(Step fromFileIntoKafka) {
         return jobBuilderFactory.get("importSalesInfo")
                 .incrementer(new RunIdIncrementer())
-                .start(fromFileIntoDataBase)
-                .next(fileCollectorTasklet())
+                .start(fromFileIntoKafka).on("FAILED").end()
+                .from(fromFileIntoKafka).on("COMPLETED").to(fileCollectorTasklet())
+                .from(fromFileIntoKafka).on("COMPLETED WITH SKIPS").to(sendEmailTasklet())
+                .end()
                 .listener(customJobExecutionListener)
                 .build();
     }
 
 
-    @Bean(name = "fromFileIntoDataBase")
+    @Bean(name = "fromFileIntoKafka")
     public Step fromFileIntoKafka(ItemReader<SalesInfoDTO> salesInfoDTOItemReader) {
         return stepBuilderFactory.get("fromFileIntoDatabase")
                 .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
@@ -128,6 +136,13 @@ public class SalesInfoJobConfig {
     public Step fileCollectorTasklet() {
         return stepBuilderFactory.get("fileCollector")
                 .tasklet(fileCollector)
+                .build();
+    }
+
+    @Bean
+    public Step sendEmailTasklet() {
+        return stepBuilderFactory.get("send email tasklet step")
+                .tasklet(sendEmail)
                 .build();
     }
 }

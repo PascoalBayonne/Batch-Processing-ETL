@@ -27,6 +27,9 @@ public class CustomStepExecutionListener implements StepExecutionListener {
         //delete the directory
         if (ExitStatus.COMPLETED.equals(stepExecution.getExitStatus())){
             log.info("The step has finished with status: {}", stepExecution.getExitStatus());
+            if (stepExecution.getSkipCount() > 0) {
+                return new ExitStatus("COMPLETED WITH SKIPS");
+            }
             return stepExecution.getExitStatus();
         }
         log.info("Something bad has happened after step: {}", stepExecution.getExitStatus());
