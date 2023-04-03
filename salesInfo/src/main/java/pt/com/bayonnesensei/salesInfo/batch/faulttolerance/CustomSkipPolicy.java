@@ -17,9 +17,8 @@ public class CustomSkipPolicy implements SkipPolicy {
     public boolean shouldSkip(Throwable exception, int skipCount) throws SkipLimitExceededException {
         if (exception instanceof FileNotFoundException){
             return Boolean.FALSE;
-        }else if ((exception instanceof FlatFileParseException) && (skipCount <= skipLimit) ){
+        }else if ((exception instanceof FlatFileParseException fileParseException) && (skipCount <= skipLimit) ){
 
-            FlatFileParseException fileParseException = (FlatFileParseException) exception;
             String input = fileParseException.getInput();
             int lineNumber = fileParseException.getLineNumber();
 

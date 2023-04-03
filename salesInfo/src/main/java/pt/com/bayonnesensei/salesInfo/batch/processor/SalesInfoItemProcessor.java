@@ -15,16 +15,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class SalesInfoItemProcessor implements ItemProcessor<SalesInfoDTO, SalesInfo> {
     private final SalesInfoMapper salesInfoMapper;
-    AtomicInteger count = new AtomicInteger(0);
 
     @Override
     public SalesInfo process(SalesInfoDTO item) throws Exception {
-        Thread.sleep(200);// maybe hitting an external api
         log.info("processing the item: {}", item.toString());
-        int i = count.addAndGet(1);
-//        if (i == 2) {
-//            throw new IllegalArgumentException();
-//        }
         return salesInfoMapper.mapToEntity(item);
     }
 }

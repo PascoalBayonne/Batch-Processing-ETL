@@ -3,8 +3,6 @@ package pt.com.bayonnesensei.salesInfo.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -14,6 +12,8 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.integration.async.AsyncItemProcessor;
 import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.kafka.KafkaItemWriter;
@@ -26,7 +26,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.faulttolerance.CustomSkipPolicy;
-import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomJobDecider;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomJobExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.listeners.CustomStepExecutionListener;
 import pt.com.bayonnesensei.salesInfo.batch.processor.SalesInfoItemProcessor;
@@ -58,7 +57,7 @@ public class SalesInfoJobConfig {
     public Job importSalesInfo(Step fromFileIntoKafka) {
         return jobBuilderFactory.get("importSalesInfo")
                 .incrementer(new RunIdIncrementer())
-                .start(fromFileIntoKafka).on("FAILED").end()
+                .start(fromFileIntoKafka).on("FAILED").fail()
                 .from(fromFileIntoKafka).on("COMPLETED").to(fileCollectorTasklet())
                 .from(fromFileIntoKafka).on("COMPLETED WITH SKIPS").to(sendEmailTasklet())
                 .end()
@@ -98,9 +97,9 @@ public class SalesInfoJobConfig {
     @Bean
     public TaskExecutor taskExecutor() {
         var executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(15);
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
+        executor.setQueueCapacity(1);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setThreadNamePrefix("Thread N-> :");
         return executor;//used on multithreaded step
@@ -117,7 +116,7 @@ public class SalesInfoJobConfig {
     @Bean
     public AsyncItemWriter<SalesInfo> asyncItemWriter() {
         var asyncWriter = new AsyncItemWriter<SalesInfo>();
-        asyncWriter.setDelegate(salesInfoKafkaItemWriter());
+        asyncWriter.setDelegate(salesInfoJpaItemWriter());
         return asyncWriter;
     }
 
@@ -130,6 +129,13 @@ public class SalesInfoJobConfig {
         kafkaItemWriter.setDelete(Boolean.FALSE);
         kafkaItemWriter.afterPropertiesSet();
         return kafkaItemWriter;
+    }
+
+    @Bean
+    public JpaItemWriter<SalesInfo> salesInfoJpaItemWriter(){
+        return new JpaItemWriterBuilder().entityManagerFactory(entityManagerFactory)
+                .usePersist(Boolean.TRUE)
+                .build();
     }
 
     @Bean
