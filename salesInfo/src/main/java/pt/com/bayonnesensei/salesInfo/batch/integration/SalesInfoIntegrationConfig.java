@@ -1,7 +1,6 @@
 package pt.com.bayonnesensei.salesInfo.batch.integration;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.bridge.MessageHandler;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;

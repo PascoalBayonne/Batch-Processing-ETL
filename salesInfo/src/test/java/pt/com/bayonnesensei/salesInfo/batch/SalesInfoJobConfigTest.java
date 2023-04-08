@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import pt.com.bayonnesensei.salesInfo.SalesInfoApplication;
+import pt.com.bayonnesensei.salesInfo.batch.integration.SalesInfoIntegrationConfig;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -25,9 +26,9 @@ import java.nio.file.Path;
 import java.util.Date;
 
 @SpringBatchTest
-@SpringJUnitConfig({SalesInfoApplication.class, SalesInfoJobConfig.class})
+@SpringJUnitConfig({SalesInfoApplication.class, SalesInfoJobConfig.class, SalesInfoIntegrationConfig.class})
 @ActiveProfiles("test")
-@TestPropertySource("classpath:application.properties")
+@TestPropertySource("classpath:application-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class SalesInfoJobConfigTest {
 
@@ -48,7 +49,7 @@ class SalesInfoJobConfigTest {
         if (Files.notExists(INPUT_DIRECTORY)) {
             Files.createDirectory(INPUT_DIRECTORY);
         }
-
+        jobRepositoryTestUtils.removeJobExecutions();
     }
 
     @SneakyThrows
@@ -59,7 +60,6 @@ class SalesInfoJobConfigTest {
                 .map(Path::toFile)
                 .forEach(File::delete);
 
-        jobRepositoryTestUtils.removeJobExecutions();
     }
 
     @SneakyThrows

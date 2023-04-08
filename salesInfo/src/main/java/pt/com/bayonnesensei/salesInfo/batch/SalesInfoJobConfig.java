@@ -16,7 +16,6 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.kafka.KafkaItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -121,19 +120,8 @@ public class SalesInfoJobConfig {
     }
 
     @Bean
-    @SneakyThrows
-    public KafkaItemWriter<String, SalesInfo> salesInfoKafkaItemWriter() {
-        var kafkaItemWriter = new KafkaItemWriter<String, SalesInfo>();
-        kafkaItemWriter.setKafkaTemplate(salesInfoKafkaTemplate);
-        kafkaItemWriter.setItemKeyMapper(salesInfo -> String.valueOf(salesInfo.getSellerId()));
-        kafkaItemWriter.setDelete(Boolean.FALSE);
-        kafkaItemWriter.afterPropertiesSet();
-        return kafkaItemWriter;
-    }
-
-    @Bean
     public JpaItemWriter<SalesInfo> salesInfoJpaItemWriter(){
-        return new JpaItemWriterBuilder().entityManagerFactory(entityManagerFactory)
+        return new JpaItemWriterBuilder<SalesInfo>().entityManagerFactory(entityManagerFactory)
                 .usePersist(Boolean.TRUE)
                 .build();
     }
