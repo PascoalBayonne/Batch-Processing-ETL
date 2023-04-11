@@ -8,7 +8,6 @@ import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.mapper.SalesInfoMapper;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor

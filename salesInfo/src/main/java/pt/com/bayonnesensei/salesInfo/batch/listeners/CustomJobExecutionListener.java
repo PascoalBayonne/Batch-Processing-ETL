@@ -20,8 +20,19 @@ public class CustomJobExecutionListener implements JobExecutionListener {
     public static final String INPUT_FILE_NAME = "input.file.name";
 
     @Override
+    @SneakyThrows
     public void beforeJob(JobExecution jobExecution) {
         log.info("---------------> Before job execution");
+        JobParameters jobParameters = jobExecution.getJobParameters();
+        Map<String, JobParameter> parameters = jobParameters.getParameters();
+        if (parameters.containsKey(INPUT_FILE_NAME)){
+            JobParameter inputFileAsJobParameter = parameters.get(INPUT_FILE_NAME);
+            Path inputDirectoryPath = Paths.get(inputFileAsJobParameter.getValue().toString()).getParent();
+            Path processedDirectory = Path.of(inputDirectoryPath.toFile() + File.separator + "processed");
+            if (Files.notExists(processedDirectory)){
+                Files.createDirectory(processedDirectory);
+            }
+        }
     }
 
     @Override
