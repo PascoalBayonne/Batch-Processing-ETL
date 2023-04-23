@@ -2,7 +2,11 @@ package pt.com.bayonnesensei.salesInfo.batch;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -10,18 +14,18 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import pt.com.bayonnesensei.salesInfo.SalesInfoApplication;
 import pt.com.bayonnesensei.salesInfo.batch.integration.SalesInfoIntegrationConfig;
+import pt.com.bayonnesensei.salesInfo.config.AbstractContainerProvider;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.DatabaseMetaData;
 import java.util.Date;
 import java.util.stream.Stream;
 
@@ -29,7 +33,7 @@ import java.util.stream.Stream;
 @SpringJUnitConfig({SalesInfoApplication.class, SalesInfoJobConfig.class, SalesInfoIntegrationConfig.class})
 @TestPropertySource("classpath:application-test.properties")
 @Slf4j
-class SalesInfoJobConfigTest {
+class SalesInfoJobConfigTest extends AbstractContainerProvider {
 
     private static final Path INPUT_DIRECTORY = Path.of("target/sales-info");
     private static final Path EXPECTED_COMPLETED_DIRECTORY = Path.of("target/sales-info/processed");
@@ -51,6 +55,9 @@ class SalesInfoJobConfigTest {
             Files.createDirectory(INPUT_DIRECTORY);
         }
         jobRepositoryTestUtils.removeJobExecutions();
+        DataSource dataSource = jdbcTemplate.getDataSource();
+        DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
+        log.info("------------> we are using the database url: {}", metaData.getURL());
     }
 
 
@@ -101,12 +108,12 @@ class SalesInfoJobConfigTest {
     @Test
     @DisplayName("GIVEN a directory with invalid files WHEN jobLaunched THEN exit status if FAILED and file is moved into failed directory")
     @SneakyThrows
-    void shouldFailWhenInputFileContainsInvalidData(){
+    void shouldFailWhenInputFileContainsInvalidData() {
         //GIVEN
         Path shouldFailFilePath = Path.of(INPUT_DIRECTORY + File.separator + "sales-info-test-should-fail.csv");
         Path inputFile = Files.createFile(shouldFailFilePath);
 
-        Files.writeString(inputFile,SalesInfoTestDataProviderUtils.supplyInvalidContent());
+        Files.writeString(inputFile, SalesInfoTestDataProviderUtils.supplyInvalidContent());
 
         //WHEN
         var jobParameters = new JobParametersBuilder()
