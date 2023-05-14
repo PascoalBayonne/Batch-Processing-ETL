@@ -2,6 +2,7 @@ package pt.com.bayonnesensei.salesInfo.batch;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -9,12 +10,13 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.integration.async.AsyncItemProcessor;
-import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.kafka.KafkaItemWriter;
+import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +34,7 @@ import pt.com.bayonnesensei.salesInfo.batch.step.SendEmail;
 import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
 import javax.persistence.EntityManagerFactory;
-import java.util.concurrent.Future;
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
@@ -67,10 +69,10 @@ public class SalesInfoJobConfig {
     @Bean(name = "fromFileIntoKafka")
     public Step fromFileIntoKafka(ItemReader<SalesInfoDTO> salesInfoDTOItemReader) {
         return stepBuilderFactory.get("fromFileIntoDatabase")
-                .<SalesInfoDTO, Future<SalesInfo>>chunk(100)
+                .<SalesInfoDTO, SalesInfo>chunk(100)
                 .reader(salesInfoDTOItemReader)
-                .processor(asyncItemProcessor())
-                .writer(asyncItemWriter())
+                .processor(salesInfoItemProcessor)
+                .writer(compositeItemWriter())
                 .faultTolerant()
                 .skipPolicy(customSkipPolicy)
                 .listener(customStepExecutionListener)
@@ -111,18 +113,29 @@ public class SalesInfoJobConfig {
         return asyncItemProcessor;
     }
 
-    @Bean
-    public AsyncItemWriter<SalesInfo> asyncItemWriter() {
-        var asyncWriter = new AsyncItemWriter<SalesInfo>();
-        asyncWriter.setDelegate(salesInfoJpaItemWriter());
-        return asyncWriter;
+
+    public CompositeItemWriter<SalesInfo> compositeItemWriter() {
+        CompositeItemWriter<SalesInfo> compositeItemWriter = new CompositeItemWriter<SalesInfo>();
+        compositeItemWriter.setDelegates(List.of(salesInfoJpaItemWriter(), salesInfoKafkaItemWriter()));
+        return compositeItemWriter;
     }
 
     @Bean
-    public JpaItemWriter<SalesInfo> salesInfoJpaItemWriter(){
+    public ItemWriter<SalesInfo> salesInfoJpaItemWriter() {
         return new JpaItemWriterBuilder<SalesInfo>().entityManagerFactory(entityManagerFactory)
                 .usePersist(Boolean.TRUE)
                 .build();
+    }
+
+    @Bean
+    @SneakyThrows
+    public ItemWriter<SalesInfo> salesInfoKafkaItemWriter() {
+        var kafkaItemWriter = new KafkaItemWriter<String, SalesInfo>();
+        kafkaItemWriter.setKafkaTemplate(salesInfoKafkaTemplate);
+        kafkaItemWriter.setItemKeyMapper(salesInfo -> String.valueOf(salesInfo.getSellerId()));
+        kafkaItemWriter.setDelete(Boolean.FALSE);
+        kafkaItemWriter.afterPropertiesSet();
+        return kafkaItemWriter;
     }
 
     @Bean

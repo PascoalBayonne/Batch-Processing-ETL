@@ -2,6 +2,8 @@ package pt.com.bayonnesensei.salesInfo.batch;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,14 +12,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.item.kafka.KafkaItemReader;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import pt.com.bayonnesensei.salesInfo.SalesInfoApplication;
+import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.integration.SalesInfoIntegrationConfig;
 import pt.com.bayonnesensei.salesInfo.config.AbstractContainerProvider;
 
@@ -27,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.DatabaseMetaData;
 import java.util.Date;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 @SpringBatchTest
@@ -38,6 +45,14 @@ class SalesInfoJobConfigTest extends AbstractContainerProvider {
     private static final Path INPUT_DIRECTORY = Path.of("target/sales-info");
     private static final Path EXPECTED_COMPLETED_DIRECTORY = Path.of("target/sales-info/processed");
     private static final Path EXPECTED_FAILED_DIRECTORY = Path.of("target/sales-info/failed");
+
+    private KafkaItemReader<String, SalesInfoDTO> reader;
+
+    private Properties consumerProperties;
+
+    @Autowired
+    private  Environment environment;
+
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -58,6 +73,18 @@ class SalesInfoJobConfigTest extends AbstractContainerProvider {
         DataSource dataSource = jdbcTemplate.getDataSource();
         DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
         log.info("------------> we are using the database url: {}", metaData.getURL());
+
+        //kafka
+        String property = environment.getProperty("spring.kafka.bootstrap-servers");
+        this.consumerProperties = new Properties();
+        this.consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                property);
+        this.consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "1");
+        this.consumerProperties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+                StringDeserializer.class.getName());
+        this.consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                JsonDeserializer.class.getName());
+
     }
 
 
