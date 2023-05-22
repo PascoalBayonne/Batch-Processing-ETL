@@ -4,14 +4,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.kafka.KafkaItemReader;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
@@ -23,15 +20,16 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import pt.com.bayonnesensei.salesInfo.SalesInfoApplication;
-import pt.com.bayonnesensei.salesInfo.batch.dto.SalesInfoDTO;
 import pt.com.bayonnesensei.salesInfo.batch.integration.SalesInfoIntegrationConfig;
 import pt.com.bayonnesensei.salesInfo.config.AbstractContainerProvider;
+import pt.com.bayonnesensei.salesInfo.domain.SalesInfo;
 
 import javax.sql.DataSource;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.DatabaseMetaData;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -46,19 +44,18 @@ class SalesInfoJobConfigTest extends AbstractContainerProvider {
     private static final Path EXPECTED_COMPLETED_DIRECTORY = Path.of("target/sales-info/processed");
     private static final Path EXPECTED_FAILED_DIRECTORY = Path.of("target/sales-info/failed");
 
-    private KafkaItemReader<String, SalesInfoDTO> reader;
-
-    private Properties consumerProperties;
-
-    @Autowired
-    private  Environment environment;
-
-
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
+
+    private KafkaItemReader<String, SalesInfo> reader;
+
+    private Properties consumerProperties;
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -74,16 +71,13 @@ class SalesInfoJobConfigTest extends AbstractContainerProvider {
         DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
         log.info("------------> we are using the database url: {}", metaData.getURL());
 
-        //kafka
-        String property = environment.getProperty("spring.kafka.bootstrap-servers");
+        String kafkaBootstrapServers = this.environment.getProperty("spring.kafka.bootstrap-servers");
         this.consumerProperties = new Properties();
-        this.consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                property);
+        this.consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         this.consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "1");
-        this.consumerProperties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
-        this.consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                JsonDeserializer.class.getName());
+        this.consumerProperties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        this.consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+        this.consumerProperties.setProperty(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
     }
 
@@ -130,6 +124,15 @@ class SalesInfoJobConfigTest extends AbstractContainerProvider {
                 .isPresent();
 
         Assertions.assertTrue(containsAnyFile);
+        //assertions for kafka containers
+        this.reader = new KafkaItemReader<>(this.consumerProperties, "sales.info", 0);
+        this.reader.setPollTimeout(Duration.ofSeconds(5));
+        this.reader.open(new ExecutionContext());
+
+        SalesInfo salesInfo = this.reader.read();
+        Assertions.assertNotNull(salesInfo);
+        Assertions.assertNotNull(salesInfo.getId());
+        Assertions.assertNotNull(salesInfo.getCity());
     }
 
     @Test

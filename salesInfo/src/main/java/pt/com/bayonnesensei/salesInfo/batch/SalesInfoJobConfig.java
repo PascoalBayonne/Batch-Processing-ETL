@@ -76,7 +76,6 @@ public class SalesInfoJobConfig {
                 .faultTolerant()
                 .skipPolicy(customSkipPolicy)
                 .listener(customStepExecutionListener)
-                .taskExecutor(taskExecutor())
                 .build();
     }
 
@@ -95,27 +94,15 @@ public class SalesInfoJobConfig {
     }
 
     @Bean
-    public TaskExecutor taskExecutor() {
-        var executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1);
-        executor.setMaxPoolSize(1);
-        executor.setQueueCapacity(1);
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        executor.setThreadNamePrefix("Thread N-> :");
-        return executor;//used on multithreaded step
-    }
-
-    @Bean
     public AsyncItemProcessor<SalesInfoDTO, SalesInfo> asyncItemProcessor() {
         var asyncItemProcessor = new AsyncItemProcessor<SalesInfoDTO, SalesInfo>();
         asyncItemProcessor.setDelegate(salesInfoItemProcessor);
-        asyncItemProcessor.setTaskExecutor(taskExecutor());
         return asyncItemProcessor;
     }
 
 
     public CompositeItemWriter<SalesInfo> compositeItemWriter() {
-        CompositeItemWriter<SalesInfo> compositeItemWriter = new CompositeItemWriter<SalesInfo>();
+        var compositeItemWriter = new CompositeItemWriter<SalesInfo>();
         compositeItemWriter.setDelegates(List.of(salesInfoJpaItemWriter(), salesInfoKafkaItemWriter()));
         return compositeItemWriter;
     }
