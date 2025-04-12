@@ -1,0 +1,66 @@
+1:{"countryCode": "AF", "countryName": "Afghanistan", "continent": "Asia", "independenceYear": 1919, "score": 2}
+2:{"countryCode": "AL", "countryName": "Albania", "continent": "Europe", "independenceYear": 1912, "score": 3}
+3:{"countryCode": "DZ", "countryName": "Algeria", "continent": "Africa", "independenceYear": 1962, "score": 4}
+4:{"countryCode": "AD", "countryName": "Andorra", "continent": "Europe", "independenceYear": 1278, "score": 5}
+5:{"countryCode": "AO", "countryName": "Angola", "continent": "Africa", "independenceYear": 1975, "score": 1}
+6:{"countryCode": "AG", "countryName": "Antigua and Barbuda", "continent": "North America", "independenceYear": 1981, "score": 2}
+7:{"countryCode": "AR", "countryName": "Argentina", "continent": "South America", "independenceYear": 1816, "score": 3}
+8:{"countryCode": "AM", "countryName": "Armenia", "continent": "Asia", "independenceYear": 1991, "score": 4}
+9:{"countryCode": "AU", "countryName": "Australia", "continent": "Oceania", "independenceYear": 1901, "score": 5}
+10:{"countryCode": "AT", "countryName": "Austria", "continent": "Europe", "independenceYear": 1955, "score": 1}
+11:{"countryCode": "AZ", "countryName": "Azerbaijan", "continent": "Asia", "independenceYear": 1991, "score": 2}
+12:{"countryCode": "BS", "countryName": "Bahamas", "continent": "North America", "independenceYear": 1973, "score": 3}
+13:{"countryCode": "BH", "countryName": "Bahrain", "continent": "Asia", "independenceYear": 1971, "score": 4}
+14:{"countryCode": "BD", "countryName": "Bangladesh", "continent": "Asia", "independenceYear": 1971, "score": 5}
+15:{"countryCode": "BB", "countryName": "Barbados", "continent": "North America", "independenceYear": 1966, "score": 1}
+16:{"countryCode": "BY", "countryName": "Belarus", "continent": "Europe", "independenceYear": 1991, "score": 2}
+17:{"countryCode": "BE", "countryName": "Belgium", "continent": "Europe", "independenceYear": 1830, "score": 3}
+18:{"countryCode": "BZ", "countryName": "Belize", "continent": "North America", "independenceYear": 1981, "score": 4}
+19:{"countryCode": "BJ", "countryName": "Benin", "continent": "Africa", "independenceYear": 1960, "score": 5}
+20:{"countryCode": "BT", "countryName": "Bhutan", "continent": "Asia", "independenceYear": 1949, "score": 1}
+21:{"countryCode": "BO", "countryName": "Bolivia", "continent": "South America", "independenceYear": 1825, "score": 2}
+22:{"countryCode": "BA", "countryName": "Bosnia and Herzegovina", "continent": "Europe", "independenceYear": 1992, "score": 3}
+23:{"countryCode": "BW", "countryName": "Botswana", "continent": "Africa", "independenceYear": 1966, "score": 4}
+24:{"countryCode": "BR", "countryName": "Brazil", "continent": "South America", "independenceYear": 1822, "score": 5}
+25:{"countryCode": "BN", "countryName": "Brunei", "continent": "Asia", "independenceYear": 1984, "score": 1}
+26:{"countryCode": "BG", "countryName": "Bulgaria", "continent": "Europe", "independenceYear": 1908, "score": 2}
+27:{"countryCode": "BF", "countryName": "Burkina Faso", "continent": "Africa", "independenceYear": 1960, "score": 3}
+28:{"countryCode": "BI", "countryName": "Burundi", "continent": "Africa", "independenceYear": 1962, "score": 4}
+29:{"countryCode": "CV", "countryName": "Cabo Verde", "continent": "Africa", "independenceYear": 1975, "score": 5}
+30:{"countryCode": "KH", "countryName": "Cambodia", "continent": "Asia", "independenceYear": 1953, "score": 1}
+31:{"countryCode": "CM", "countryName": "Cameroon", "continent": "Africa", "independenceYear": 1960, "score": 2}
+32:{"countryCode": "CA", "countryName": "Canada", "continent": "North America", "independenceYear": 1867, "score": 3}
+33:{"countryCode": "CF", "countryName": "Central African Republic", "continent": "Africa", "independenceYear": 1960, "score": 4}
+34:{"countryCode": "TD", "countryName": "Chad", "continent": "Africa", "independenceYear": 1960, "score": 5}
+35:{"countryCode": "CL", "countryName": "Chile", "continent": "South America", "independenceYear": 1818, "score": 1}
+36:{"countryCode": "CN", "countryName": "China", "continent": "Asia", "independenceYear": -221, "score": 2}
+37:{"countryCode": "LU", "countryName": "Luxembourg", "continent": "Europe", "independenceYear": 1839, "score": 5}
+38:{"countryCode": "MO", "countryName": "Macao", "continent": "Asia", "independenceYear": 1999, "score": 4}
+39:{"countryCode": "IE", "countryName": "Ireland", "continent": "Europe", "independenceYear": 1922, "score": 3}
+40:{"countryCode": "SG", "countryName": "Singapore", "continent": "Asia", "independenceYear": 1965, "score": 2}
+41:{"countryCode": "QA", "countryName": "Qatar", "continent": "Asia", "independenceYear": 1971, "score": 1}
+42:{"countryCode": "AE", "countryName": "United Arab Emirates", "continent": "Asia", "independenceYear": 1971, "score": 5}
+43:{"countryCode": "CH", "countryName": "Switzerland", "continent": "Europe", "independenceYear": 1291, "score": 4}
+44:{"countryCode": "BM", "countryName": "Bermuda", "continent": "North America", "independenceYear": 1968, "score": 3}
+45:{"countryCode": "NO", "countryName": "Norway", "continent": "Europe", "independenceYear": 1905, "score": 2}
+46:{"countryCode": "IS", "countryName": "Iceland", "continent": "Europe", "independenceYear": 1944, "score": 1}
+47:{"countryCode": "FI", "countryName": "Finland", "continent": "Europe", "independenceYear": 1917, "score": 5}
+48:{"countryCode": "SE", "countryName": "Sweden", "continent": "Europe", "independenceYear": 1905, "score": 5}
+49:{"countryCode": "DK", "countryName": "Denmark", "continent": "Europe", "independenceYear": 1814, "score": 5}
+50:{"countryCode": "NL", "countryName": "Netherlands", "continent": "Europe", "independenceYear": 1581, "score": 5}
+51:{"countryCode": "BE", "countryName": "Belgium", "continent": "Europe", "independenceYear": 1830, "score": 5}
+52:{"countryCode": "AT", "countryName": "Austria", "continent": "Europe", "independenceYear": 1955, "score": 5}
+53:{"countryCode": "CH", "countryName": "Switzerland", "continent": "Europe", "independenceYear": 1291, "score": 5}
+54:{"countryCode": "NO", "countryName": "Norway", "continent": "Europe", "independenceYear": 1905, "score": 5}
+55:{"countryCode": "IE", "countryName": "Ireland", "continent": "Europe", "independenceYear": 1922, "score": 5}
+56:{"countryCode": "ES", "countryName": "Spain", "continent": "Europe", "independenceYear": 1492, "score": 4}
+57:{"countryCode": "CN", "countryName": "China", "continent": "Asia", "independenceYear": 1949, "score": 5}
+58:{"countryCode": "IN", "countryName": "India", "continent": "Asia", "independenceYear": 1947, "score": 5}
+59:{"countryCode": "ID", "countryName": "Indonesia", "continent": "Asia", "independenceYear": 1945, "score": 4}
+60:{"countryCode": "PK", "countryName": "Pakistan", "continent": "Asia", "independenceYear": 1947, "score": 4}
+61:{"countryCode": "BD", "countryName": "Bangladesh", "continent": "Asia", "independenceYear": 1971, "score": 3}
+62:{"countryCode": "JP", "countryName": "Japan", "continent": "Asia", "independenceYear": 660 BC, "score": 5}
+63:{"countryCode": "PH", "countryName": "Philippines", "continent": "Asia", "independenceYear": 1898, "score": 3}
+64:{"countryCode": "VN", "countryName": "Vietnam", "continent": "Asia", "independenceYear": 1945, "score": 3}
+65:{"countryCode": "TR", "countryName": "Turkey", "continent": "Asia", "independenceYear": 1923, "score": 4}
+66:{"countryCode": "IR", "countryName": "Iran", "continent": "Asia", "independenceYear": 1979, "score": 3}

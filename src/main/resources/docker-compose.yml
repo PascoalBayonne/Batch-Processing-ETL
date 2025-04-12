@@ -1,0 +1,102 @@
+version: '3'
+services:
+
+
+
+  zookeeper:
+    platform: linux/arm64/v8 #use this if you are using Mac with apple processor
+    image: "confluentinc/cp-zookeeper"
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    platform: linux/arm64/v8 #use this if you are using Mac with apple processor
+    image: "confluentinc/cp-enterprise-kafka"
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      # Exposes 9092 for external connections to the broker
+      # Use kafka:29092 for connections internal on the docker network
+      # See https://rmoff.net/2018/08/02/kafka-listeners-explained/ for details
+      - '9092:9092'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
+      CONFLUENT_METRICS_ENABLE: 'false'
+
+  akhq:
+    platform: linux/arm64/v8 #use this if you are using Mac with apple processor
+    image: tchiotludo/akhq:latest
+    depends_on:
+      - kafka
+    ports:
+      - 8080:8080
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka:29092"
+              schema-registry:
+                url: "http://localhost:8081"
+              connect:
+                - name: "debezium"
+                  url: "debezium:8083"
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry
+    ports:
+      - 8081:8081
+    depends_on:
+      - zookeeper
+      - kafka
+    volumes:
+      - ./scripts:/scripts
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+      SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: "none"
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: "WARN"
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:29092'
+
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    command: mongod --replSet rs0
+    healthcheck:
+      test: |
+        mongosh --eval "try { rs.status().ok } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'localhost:27017' }] }).ok }"
+      start_period: 0s
+      interval: 500ms
+      timeout: 5s
+      retries: 5
+
+networks:
+  cloudservices:
+  jaeger-example:
+  sensei-services:
+
+volumes:
+  redis_data:
+    driver: local
+  prometheus-data:
+    driver: local
+  data: {}
+
+

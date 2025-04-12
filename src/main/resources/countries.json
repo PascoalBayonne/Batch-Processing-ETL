@@ -1,0 +1,562 @@
+[
+    {
+        "countryCode": "AF",
+        "countryName": "Afghanistan",
+        "continent": "Asia",
+        "independenceYear": 1919,
+        "score": 2
+    },
+    {
+        "countryCode": "AL",
+        "countryName": "Albania",
+        "continent": "Europe",
+        "independenceYear": 1912,
+        "score": 1
+    },
+    {
+        "countryCode": "DZ",
+        "countryName": "Algeria",
+        "continent": "Africa",
+        "independenceYear": 1962,
+        "score": 2
+    },
+    {
+        "countryCode": "AO",
+        "countryName": "Angola",
+        "continent": "Africa",
+        "independenceYear": 1975,
+        "score": 5
+    },
+    {
+        "countryCode": "AR",
+        "countryName": "Argentina",
+        "continent": "South America",
+        "independenceYear": 1816,
+        "score": 0
+    },
+    {
+        "countryCode": "AU",
+        "countryName": "Australia",
+        "continent": "Oceania",
+        "independenceYear": 1901,
+        "score": 5
+    },
+    {
+        "countryCode": "AZ",
+        "countryName": "Azerbaijan",
+        "continent": "Asia",
+        "independenceYear": 1991,
+        "score": 3
+    },
+    {
+        "countryCode": "BH",
+        "countryName": "Bahrain",
+        "continent": "Asia",
+        "independenceYear": 1971,
+        "score": 2
+    },
+    {
+        "countryCode": "BD",
+        "countryName": "Bangladesh",
+        "continent": "Asia",
+        "independenceYear": 1971,
+        "score": 2
+    },
+    {
+        "countryCode": "BY",
+        "countryName": "Belarus",
+        "continent": "Europe",
+        "independenceYear": 1991,
+        "score": 2
+    },
+    {
+        "countryCode": "BE",
+        "countryName": "Belgium",
+        "continent": "Europe",
+        "independenceYear": 1830,
+        "score": 3
+    },
+    {
+        "countryCode": "BO",
+        "countryName": "Bolivia",
+        "continent": "South America",
+        "independenceYear": 1825,
+        "score": 0
+    },
+    {
+        "countryCode": "BR",
+        "countryName": "Brazil",
+        "continent": "South America",
+        "independenceYear": 1822,
+        "score": 4
+    },
+    {
+        "countryCode": "CA",
+        "countryName": "Canada",
+        "continent": "North America",
+        "independenceYear": 1867,
+        "score": 5
+    },
+    {
+        "countryCode": "CN",
+        "countryName": "China",
+        "continent": "Asia",
+        "independenceYear": -2070,
+        "score": 5
+    },
+    {
+        "countryCode": "CD",
+        "countryName": "Democratic Republic of the Congo",
+        "continent": "Africa",
+        "independenceYear": 1960,
+        "score": 5
+    },
+    {
+        "countryCode": "EG",
+        "countryName": "Egypt",
+        "continent": "Africa",
+        "independenceYear": 1922,
+        "score": 1
+    },
+    {
+        "countryCode": "FR",
+        "countryName": "France",
+        "continent": "Europe",
+        "independenceYear": 843,
+        "score": 3
+    },
+    {
+        "countryCode": "DE",
+        "countryName": "Germany",
+        "continent": "Europe",
+        "independenceYear": 1871,
+        "score": 0
+    },
+    {
+        "countryCode": "IN",
+        "countryName": "India",
+        "continent": "Asia",
+        "independenceYear": 1947,
+        "score": 3
+    },
+    {
+        "countryCode": "ID",
+        "countryName": "Indonesia",
+        "continent": "Asia",
+        "independenceYear": 1945,
+        "score": 3
+    },
+    {
+        "countryCode": "IR",
+        "countryName": "Iran",
+        "continent": "Asia",
+        "independenceYear": 1979,
+        "score": 4
+    },
+    {
+        "countryCode": "IQ",
+        "countryName": "Iraq",
+        "continent": "Asia",
+        "independenceYear": 1932,
+        "score": 5
+    },
+    {
+        "countryCode": "IT",
+        "countryName": "Italy",
+        "continent": "Europe",
+        "independenceYear": 1861,
+        "score": 3
+    },
+    {
+        "countryCode": "JP",
+        "countryName": "Japan",
+        "continent": "Asia",
+        "independenceYear": -660,
+        "score": 3
+    },
+    {
+        "countryCode": "KZ",
+        "countryName": "Kazakhstan",
+        "continent": "Asia",
+        "independenceYear": 1991,
+        "score": 5
+    },
+    {
+        "countryCode": "KW",
+        "countryName": "Kuwait",
+        "continent": "Asia",
+        "independenceYear": 1961,
+        "score": 1
+    },
+    {
+        "countryCode": "LY",
+        "countryName": "Libya",
+        "continent": "Africa",
+        "independenceYear": 1951,
+        "score": 5
+    },
+    {
+        "countryCode": "MX",
+        "countryName": "Mexico",
+        "continent": "North America",
+        "independenceYear": 1810,
+        "score": 5
+    },
+    {
+        "countryCode": "NG",
+        "countryName": "Nigeria",
+        "continent": "Africa",
+        "independenceYear": 1960,
+        "score": 5
+    },
+    {
+        "countryCode": "NO",
+        "countryName": "Norway",
+        "continent": "Europe",
+        "independenceYear": 1905,
+        "score": 4
+    },
+    {
+        "countryCode": "RU",
+        "countryName": "Russia",
+        "continent": "Europe",
+        "independenceYear": 1991,
+        "score": 5
+    },
+    {
+        "countryCode": "SA",
+        "countryName": "Saudi Arabia",
+        "continent": "Asia",
+        "independenceYear": 1932,
+        "score": 5
+    },
+    {
+        "countryCode": "ZA",
+        "countryName": "South Africa",
+        "continent": "Africa",
+        "independenceYear": 1910,
+        "score": 1
+    },
+    {
+        "countryCode": "US",
+        "countryName": "United States",
+        "continent": "North America",
+        "independenceYear": 1776,
+        "score": 4
+    },
+    {
+        "countryCode": "VE",
+        "countryName": "Venezuela",
+        "continent": "South America",
+        "independenceYear": 1811,
+        "score": 4
+    },
+    {
+        "countryCode": "AD",
+        "countryName": "Andorra",
+        "continent": "Europe",
+        "independenceYear": 1278,
+        "score": 3
+    },
+    {
+        "countryCode": "AM",
+        "countryName": "Armenia",
+        "continent": "Asia",
+        "independenceYear": 1991,
+        "score": 1
+    },
+    {
+        "countryCode": "AT",
+        "countryName": "Austria",
+        "continent": "Europe",
+        "independenceYear": 1955,
+        "score": 3
+    },
+    {
+        "countryCode": "BS",
+        "countryName": "Bahamas",
+        "continent": "North America",
+        "independenceYear": 1973,
+        "score": 1
+    },
+    {
+        "countryCode": "BB",
+        "countryName": "Barbados",
+        "continent": "North America",
+        "independenceYear": 1966,
+        "score": 1
+    },
+    {
+        "countryCode": "BT",
+        "countryName": "Bhutan",
+        "continent": "Asia",
+        "independenceYear": 1949,
+        "score": 3
+    },
+    {
+        "countryCode": "BW",
+        "countryName": "Botswana",
+        "continent": "Africa",
+        "independenceYear": 1966,
+        "score": 2
+    },
+    {
+        "countryCode": "KH",
+        "countryName": "Cambodia",
+        "continent": "Asia",
+        "independenceYear": 1953,
+        "score": 2
+    },
+    {
+        "countryCode": "CL",
+        "countryName": "Chile",
+        "continent": "South America",
+        "independenceYear": 1818,
+        "score": 3
+    },
+    {
+        "countryCode": "CO",
+        "countryName": "Colombia",
+        "continent": "South America",
+        "independenceYear": 1810,
+        "score": 3
+    },
+    {
+        "countryCode": "CR",
+        "countryName": "Costa Rica",
+        "continent": "North America",
+        "independenceYear": 1821,
+        "score": 2
+    },
+    {
+        "countryCode": "CU",
+        "countryName": "Cuba",
+        "continent": "North America",
+        "independenceYear": 1902,
+        "score": 2
+    },
+    {
+        "countryCode": "DK",
+        "countryName": "Denmark",
+        "continent": "Europe",
+        "independenceYear": 950,
+        "score": 2
+    },
+    {
+        "countryCode": "DO",
+        "countryName": "Dominican Republic",
+        "continent": "North America",
+        "independenceYear": 1844,
+        "score": 3
+    },
+    {
+        "countryCode": "EC",
+        "countryName": "Ecuador",
+        "continent": "South America",
+        "independenceYear": 1820,
+        "score": 3
+    },
+    {
+        "countryCode": "FI",
+        "countryName": "Finland",
+        "continent": "Europe",
+        "independenceYear": 1917,
+        "score": 2
+    },
+    {
+        "countryCode": "GR",
+        "countryName": "Greece",
+        "continent": "Europe",
+        "independenceYear": 1830,
+        "score": 0
+    },
+    {
+        "countryCode": "GT",
+        "countryName": "Guatemala",
+        "continent": "North America",
+        "independenceYear": 1821,
+        "score": 1
+    },
+    {
+        "countryCode": "HU",
+        "countryName": "Hungary",
+        "continent": "Europe",
+        "independenceYear": 1000,
+        "score": 3
+    },
+    {
+        "countryCode": "IE",
+        "countryName": "Ireland",
+        "continent": "Europe",
+        "independenceYear": 1921,
+        "score": 1
+    },
+    {
+        "countryCode": "IL",
+        "countryName": "Israel",
+        "continent": "Asia",
+        "independenceYear": 1948,
+        "score": 0
+    },
+    {
+        "countryCode": "JM",
+        "countryName": "Jamaica",
+        "continent": "North America",
+        "independenceYear": 1962,
+        "score": 3
+    },
+    {
+        "countryCode": "KE",
+        "countryName": "Kenya",
+        "continent": "Africa",
+        "independenceYear": 1963,
+        "score": 2
+    },
+    {
+        "countryCode": "LB",
+        "countryName": "Lebanon",
+        "continent": "Asia",
+        "independenceYear": 1943,
+        "score": 0
+    },
+    {
+        "countryCode": "MY",
+        "countryName": "Malaysia",
+        "continent": "Asia",
+        "independenceYear": 1957,
+        "score": 2
+    },
+    {
+        "countryCode": "NL",
+        "countryName": "Netherlands",
+        "continent": "Europe",
+        "independenceYear": 1581,
+        "score": 3
+    },
+    {
+        "countryCode": "NZ",
+        "countryName": "New Zealand",
+        "continent": "Oceania",
+        "independenceYear": 1907,
+        "score": 1
+    },
+    {
+        "countryCode": "PK",
+        "countryName": "Pakistan",
+        "continent": "Asia",
+        "independenceYear": 1947,
+        "score": 0
+    },
+    {
+        "countryCode": "PE",
+        "countryName": "Peru",
+        "continent": "South America",
+        "independenceYear": 1821,
+        "score": 1
+    },
+    {
+        "countryCode": "PH",
+        "countryName": "Philippines",
+        "continent": "Asia",
+        "independenceYear": 1946,
+        "score": 3
+    },
+    {
+        "countryCode": "PL",
+        "countryName": "Poland",
+        "continent": "Europe",
+        "independenceYear": 1918,
+        "score": 0
+    },
+    {
+        "countryCode": "PT",
+        "countryName": "Portugal",
+        "continent": "Europe",
+        "independenceYear": 1143,
+        "score": 1
+    },
+    {
+        "countryCode": "KR",
+        "countryName": "South Korea",
+        "continent": "Asia",
+        "independenceYear": 1948,
+        "score": 1
+    },
+    {
+        "countryCode": "ES",
+        "countryName": "Spain",
+        "continent": "Europe",
+        "independenceYear": 1492,
+        "score": 1
+    },
+    {
+        "countryCode": "SE",
+        "countryName": "Sweden",
+        "continent": "Europe",
+        "independenceYear": 1523,
+        "score": 1
+    },
+    {
+        "countryCode": "CH",
+        "countryName": "Switzerland",
+        "continent": "Europe",
+        "independenceYear": 1291,
+        "score": 3
+    },
+    {
+        "countryCode": "TH",
+        "countryName": "Thailand",
+        "continent": "Asia",
+        "independenceYear": null,
+        "score": 2
+    },
+    {
+        "countryCode": "TR",
+        "countryName": "Turkey",
+        "continent": "Asia",
+        "independenceYear": 1923,
+        "score": 3
+    },
+    {
+        "countryCode": "UA",
+        "countryName": "Ukraine",
+        "continent": "Europe",
+        "independenceYear": 1991,
+        "score": 1
+    },
+    {
+        "countryCode": "AE",
+        "countryName": "United Arab Emirates",
+        "continent": "Asia",
+        "independenceYear": 1971,
+        "score": 2
+    },
+    {
+        "countryCode": "GB",
+        "countryName": "United Kingdom",
+        "continent": "Europe",
+        "independenceYear": null,
+        "score": 0
+    },
+    {
+        "countryCode": "UY",
+        "countryName": "Uruguay",
+        "continent": "South America",
+        "independenceYear": 1828,
+        "score": 2
+    },
+    {
+        "countryCode": "VN",
+        "countryName": "Vietnam",
+        "continent": "Asia",
+        "independenceYear": 1945,
+        "score": 0
+    },
+    {
+        "countryCode": "ZM",
+        "countryName": "Zambia",
+        "continent": "Africa",
+        "independenceYear": 1964,
+        "score": 3
+    }
+]
