@@ -1,0 +1,67 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/vehicles/mercedes",
+    "queryParameters": {
+      "page": {
+        "equalTo": "5"
+      },
+      "size": {
+        "equalTo": "5"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "content": [
+        {
+          "id": 121,
+          "brand": "mercedes",
+          "model": "E63 AMG",
+          "year": 2024,
+          "vin": "WDD2130601R000121"
+        },
+        {
+          "id": 122,
+          "brand": "mercedes",
+          "model": "Maybach S680",
+          "year": 2023,
+          "vin": "W1KAG2JB1NA000122"
+        },
+        {
+          "id": 123,
+          "brand": "mercedes",
+          "model": "GLE Coupe",
+          "year": 2022,
+          "vin": "4JGFB7CB0LA000123"
+        },
+        {
+          "id": 124,
+          "brand": "mercedes",
+          "model": "V220",
+          "year": 2021,
+          "vin": "WDF4472302P000124"
+        },
+        {
+          "id": 125,
+          "brand": "mercedes",
+          "model": "Marco Polo",
+          "year": 2022,
+          "vin": "WDF4472262P000125"
+        }
+      ],
+      "pageable": {
+        "pageNumber": 5,
+        "pageSize": 5
+      },
+      "totalPages": 5,
+      "totalElements": 25,
+      "first": false,
+      "last": true
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/vehicles/mercedes"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {"id": 1, "brand": "mercedes", "model": "C 200", "year": 2021, "vin": "WDDZF4JB1HA000001"},
+      {"id": 2, "brand": "mercedes", "model": "E 300", "year": 2022, "vin": "W1KZF8DB9MA000002"},
+      {"id": 3, "brand": "mercedes", "model": "GLC 300", "year": 2020, "vin": "WDC0G8EB1LF000003"},
+      {"id": 4, "brand": "mercedes", "model": "S 500", "year": 2023, "vin": "W1K6G6DB5PA000004"},
+      {"id": 5, "brand": "mercedes", "model": "A 180", "year": 2019, "vin": "WDD1770841J000005"}
+    ]
+  }
+}

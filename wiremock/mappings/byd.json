@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/vehicles/byd"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {"id": 1, "brand": "byd", "model": "Atto 3", "year": 2023, "vin": "LB3A23E11B000001"},
+      {"id": 2, "brand": "byd", "model": "Han", "year": 2022, "vin": "LB3H45E22B000002"},
+      {"id": 3, "brand": "byd", "model": "Tang", "year": 2021, "vin": "LB3T67E33B000003"},
+      {"id": 4, "brand": "byd", "model": "Dolphin", "year": 2024, "vin": "LB3D89E44B000004"},
+      {"id": 5, "brand": "byd", "model": "Seal", "year": 2024, "vin": "LB3S01E55B000005"}
+    ]
+  }
+}

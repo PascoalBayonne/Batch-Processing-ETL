@@ -1,0 +1,67 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/vehicles/mercedes",
+    "queryParameters": {
+      "page": {
+        "equalTo": "2"
+      },
+      "size": {
+        "equalTo": "5"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "content": [
+        {
+          "id": 106,
+          "brand": "mercedes",
+          "model": "A180",
+          "year": 2020,
+          "vin": "WDD1770031J000106"
+        },
+        {
+          "id": 107,
+          "brand": "mercedes",
+          "model": "CLA250",
+          "year": 2021,
+          "vin": "WDD1173121N000107"
+        },
+        {
+          "id": 108,
+          "brand": "mercedes",
+          "model": "GLA200",
+          "year": 2022,
+          "vin": "WDC1569031N000108"
+        },
+        {
+          "id": 109,
+          "brand": "mercedes",
+          "model": "GLB220",
+          "year": 2023,
+          "vin": "WDC2472701N000109"
+        },
+        {
+          "id": 110,
+          "brand": "mercedes",
+          "model": "GLS580",
+          "year": 2024,
+          "vin": "4JGFF8HE1LA000110"
+        }
+      ],
+      "pageable": {
+        "pageNumber": 2,
+        "pageSize": 5
+      },
+      "totalPages": 5,
+      "totalElements": 25,
+      "first": false,
+      "last": false
+    }
+  }
+}

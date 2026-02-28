@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/vehicles/bmw"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {"id": 1, "brand": "bmw", "model": "320i", "year": 2020, "vin": "WBA8E1G50GNU00001"},
+      {"id": 2, "brand": "bmw", "model": "530e", "year": 2022, "vin": "WBAJA9C52JB000002"},
+      {"id": 3, "brand": "bmw", "model": "X3", "year": 2021, "vin": "5UXWX7C5*BA000003"},
+      {"id": 4, "brand": "bmw", "model": "X5", "year": 2023, "vin": "5UXKR0C59E0000004"},
+      {"id": 5, "brand": "bmw", "model": "i4", "year": 2024, "vin": "WBY31AW06P000005"}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/vehicles/toyota"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {"id": 1, "brand": "toyota", "model": "Corolla", "year": 2020, "vin": "JTDBR32E720000001"},
+      {"id": 2, "brand": "toyota", "model": "Camry", "year": 2022, "vin": "4T1BF1FK4GU000002"},
+      {"id": 3, "brand": "toyota", "model": "RAV4", "year": 2021, "vin": "2T3RFREV7DW000003"},
+      {"id": 4, "brand": "toyota", "model": "Highlander", "year": 2023, "vin": "5TDJKRFH8FS000004"},
+      {"id": 5, "brand": "toyota", "model": "Prius", "year": 2019, "vin": "JTDKB20U793000005"}
+    ]
+  }
+}

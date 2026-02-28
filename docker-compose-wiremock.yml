@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  wiremock:
+    image: wiremock/wiremock:3.9.1
+    container_name: vehicle-mock-wiremock
+    ports:
+      - "8089:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+    command: ["--verbose"]
+    restart: unless-stopped
+  ## Usage
+  # Start:   docker compose -f docker-compose-wiremock.yml up -d
+  # Stop:    docker compose -f docker-compose-wiremock.yml down
+  # Test:    curl http://localhost:8089/api/vehicles/mercedes
+
+  postgresql:
+    image: postgres:14
+    hostname: postgresql
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "conduktor-console"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+
+volumes:
+  pg_data: { }
+
+
+

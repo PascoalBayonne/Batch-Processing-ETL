@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/vehicles/mercedes",
+    "headers": {
+      "Content-Type": {
+        "contains": "application/json"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.brand"
+        
+      },
+      {
+        "matchesJsonPath": "$.model"
+        
+      },
+      {
+        "matchesJsonPath": "$.year"
+        
+      },
+      {
+        "matchesJsonPath": "$.vin"
+        
+      }
+    ]
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json",
+      "Location": "/api/vehicles/mercedes/{{randomValue type='UUID'}}"
+    }
+  }
+}

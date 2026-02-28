@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: vehicles
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/vehicles}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+  batch:
+    jdbc:
+      initialize-schema: always
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    org.springframework.batch: INFO
+
+
+

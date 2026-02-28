@@ -1,0 +1,67 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/vehicles/mercedes",
+    "queryParameters": {
+      "page": {
+        "equalTo": "1"
+      },
+      "size": {
+        "equalTo": "5"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "content": [
+        {
+          "id": 101,
+          "brand": "mercedes",
+          "model": "C200",
+          "year": 2020,
+          "vin": "WDD2050421R000101"
+        },
+        {
+          "id": 102,
+          "brand": "mercedes",
+          "model": "E300",
+          "year": 2021,
+          "vin": "WDD2130561A000102"
+        },
+        {
+          "id": 103,
+          "brand": "mercedes",
+          "model": "S500",
+          "year": 2022,
+          "vin": "WDD2221801A000103"
+        },
+        {
+          "id": 104,
+          "brand": "mercedes",
+          "model": "GLC300",
+          "year": 2023,
+          "vin": "WDC2539541F000104"
+        },
+        {
+          "id": 105,
+          "brand": "mercedes",
+          "model": "GLE350",
+          "year": 2024,
+          "vin": "4JGFB4JB1LA000105"
+        }
+      ],
+      "pageable": {
+        "pageNumber": 1,
+        "pageSize": 5
+      },
+      "totalPages": 5,
+      "totalElements": 25,
+      "first": true,
+      "last": false
+    }
+  }
+}

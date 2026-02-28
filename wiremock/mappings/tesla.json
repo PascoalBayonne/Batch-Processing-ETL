@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/vehicles/tesla"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {"id": 1, "brand": "tesla", "model": "Model S", "year": 2022, "vin": "5YJSA1E26JF000001"},
+      {"id": 2, "brand": "tesla", "model": "Model 3", "year": 2023, "vin": "5YJ3E1EA7KF000002"},
+      {"id": 3, "brand": "tesla", "model": "Model X", "year": 2021, "vin": "5YJXCBE22HF000003"},
+      {"id": 4, "brand": "tesla", "model": "Model Y", "year": 2024, "vin": "7SAYGDEE8NF000004"},
+      {"id": 5, "brand": "tesla", "model": "Cybertruck", "year": 2024, "vin": "7G2CE1110RF000005"}
+    ]
+  }
+}

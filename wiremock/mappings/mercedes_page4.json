@@ -1,0 +1,67 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/vehicles/mercedes",
+    "queryParameters": {
+      "page": {
+        "equalTo": "4"
+      },
+      "size": {
+        "equalTo": "5"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "content": [
+        {
+          "id": 116,
+          "brand": "mercedes",
+          "model": "CLS350",
+          "year": 2021,
+          "vin": "WDD2183951A000116"
+        },
+        {
+          "id": 117,
+          "brand": "mercedes",
+          "model": "GLC Coupe",
+          "year": 2022,
+          "vin": "WDC2539101H000117"
+        },
+        {
+          "id": 118,
+          "brand": "mercedes",
+          "model": "EQA250",
+          "year": 2023,
+          "vin": "W1EZE5EB6MJ000118"
+        },
+        {
+          "id": 119,
+          "brand": "mercedes",
+          "model": "EQB300",
+          "year": 2023,
+          "vin": "W1NEE5EB6NJ000119"
+        },
+        {
+          "id": 120,
+          "brand": "mercedes",
+          "model": "C63 AMG",
+          "year": 2024,
+          "vin": "WDD2053491R000120"
+        }
+      ],
+      "pageable": {
+        "pageNumber": 4,
+        "pageSize": 5
+      },
+      "totalPages": 5,
+      "totalElements": 25,
+      "first": false,
+      "last": false
+    }
+  }
+}

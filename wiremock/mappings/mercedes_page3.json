@@ -1,0 +1,67 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/api/vehicles/mercedes",
+    "queryParameters": {
+      "page": {
+        "equalTo": "3"
+      },
+      "size": {
+        "equalTo": "5"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "content": [
+        {
+          "id": 111,
+          "brand": "mercedes",
+          "model": "AMG GT",
+          "year": 2022,
+          "vin": "WDD1901751A000111"
+        },
+        {
+          "id": 112,
+          "brand": "mercedes",
+          "model": "EQC400",
+          "year": 2023,
+          "vin": "WDC2935221F000112"
+        },
+        {
+          "id": 113,
+          "brand": "mercedes",
+          "model": "EQS450",
+          "year": 2023,
+          "vin": "W1KCG2DB4NA000113"
+        },
+        {
+          "id": 114,
+          "brand": "mercedes",
+          "model": "G500",
+          "year": 2024,
+          "vin": "W1NYC7HJ5LX000114"
+        },
+        {
+          "id": 115,
+          "brand": "mercedes",
+          "model": "SL500",
+          "year": 2022,
+          "vin": "W1KCK3HB5NA000115"
+        }
+      ],
+      "pageable": {
+        "pageNumber": 3,
+        "pageSize": 5
+      },
+      "totalPages": 5,
+      "totalElements": 25,
+      "first": false,
+      "last": false
+    }
+  }
+}
