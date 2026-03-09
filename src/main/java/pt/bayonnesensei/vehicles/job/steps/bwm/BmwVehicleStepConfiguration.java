@@ -42,7 +42,9 @@ public class BmwVehicleStepConfiguration {
 
                         int[][] ints = vehicleWriter.vehicleBatchItemWriter(vehicleDTOS);
 
-                        int totalRecordsInserted = Arrays.stream(ints).flatMapToInt(Arrays::stream).sum();
+                        int totalRecordsInserted = Arrays.stream(ints)
+                                .flatMapToInt(Arrays::stream)
+                                .sum();
 
                         log.info("Task {} persisted {} records", TASK_NAME, totalRecordsInserted);
                         return RepeatStatus.FINISHED;
